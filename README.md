@@ -96,7 +96,14 @@ See `docs/update.md`.
 
 ### Tell Another AI To Install It
 
-See `docs/tell-ai.md`.
+Use the file that matches the target CLI:
+
+- Codex: `docs/tell-ai-codex.md`
+- Claude Code: `docs/tell-ai-claude-code.md`
+- OpenCode: `docs/tell-ai-opencode.md`
+- Gemini CLI: `docs/tell-ai-gemini-cli.md`
+
+Each file contains a single copy-ready prompt for that specific platform.
 
 ## Usage
 

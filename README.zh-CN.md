@@ -96,7 +96,14 @@ Gemini CLI 采用 git clone + `~/.gemini/GEMINI.md` 引用的方式。
 
 ### 让其他 AI 帮你安装
 
-详见：`docs/tell-ai.md`
+请直接使用和目标 CLI 对应的文件：
+
+- Codex：`docs/tell-ai-codex.md`
+- Claude Code：`docs/tell-ai-claude-code.md`
+- OpenCode：`docs/tell-ai-opencode.md`
+- Gemini CLI：`docs/tell-ai-gemini-cli.md`
+
+每个文件都只包含该平台专用的一段可直接复制给 AI 的提示词。
 
 ## 使用方式
 
