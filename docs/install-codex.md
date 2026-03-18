@@ -1,22 +1,23 @@
 # Install for Codex
 
-Codex currently uses the clone-based flow for this repo.
+This guide follows the git-based install style used by Superpowers: keep a local clone of the repo, then symlink the skills into Codex.
 
-## Option 1: clone and install with script
+## Installation
+
+### 1. Clone the repository
 
 ```bash
 mkdir -p ~/ai/skills
 git clone https://github.com/zephyrcicd/ai-skill-git-commit-message ~/ai/skills/ai-skill-git-commit-message
-bash ~/ai/skills/ai-skill-git-commit-message/install.sh codex
 ```
 
-## Option 2: manual install
+### 2. Symlink the skills into Codex
 
 ```bash
-mkdir -p ~/ai/skills ~/.codex/skills
-git clone https://github.com/zephyrcicd/ai-skill-git-commit-message ~/ai/skills/ai-skill-git-commit-message
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm ~/.codex/skills/ggm
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm-p ~/.codex/skills/ggm-p
+mkdir -p ~/.codex/skills
+rm -rf ~/.codex/skills/ggm ~/.codex/skills/ggm-p
+ln -s ~/ai/skills/ai-skill-git-commit-message/skills/ggm ~/.codex/skills/ggm
+ln -s ~/ai/skills/ai-skill-git-commit-message/skills/ggm-p ~/.codex/skills/ggm-p
 ```
 
 ## Use it
@@ -27,4 +28,11 @@ $ggm
 
 ```text
 $ggm-p
+```
+
+## Update
+
+```bash
+cd ~/ai/skills/ai-skill-git-commit-message
+git pull
 ```

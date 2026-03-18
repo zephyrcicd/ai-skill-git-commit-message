@@ -1,8 +1,12 @@
 # Git Commit Message Skills
 
+English | [简体中文](README.zh-CN.md)
+
 A shareable AI skill repo for generating Git commit messages from conversation context and the current git diff.
 
-It now ships two related skills:
+Recommended install style: Git-first. Clone the repo locally, then follow the platform-specific guide for your tool.
+
+It ships two related skills:
 
 - `ggm` - generate a concise commit message only
 - `ggm-p` - generate a commit message, then ask whether to run `git commit` for the relevant files
@@ -73,6 +77,27 @@ If you want Codex to install it for you, point it to:
 - `.codex/INSTALL.md`
 - `docs/install-for-codex-agent.md`
 
+
+### OpenCode
+
+OpenCode uses a git clone plus symlink flow similar to Superpowers.
+
+Detailed guide: `docs/install-opencode.md`
+
+### Gemini CLI
+
+Gemini CLI uses a git clone plus `~/.gemini/GEMINI.md` reference flow.
+
+Detailed guide: `docs/install-gemini-cli.md`
+
+### Updating
+
+See `docs/update.md`.
+
+### Tell Another AI To Install It
+
+See `docs/tell-ai.md`.
+
 ## Usage
 
 ```text
@@ -106,20 +131,6 @@ Use `ggm-p` when you want the model to:
 - narrow the commit to relevant files
 - check those selected files for likely privacy leakage
 - ask whether to run `git commit`
-
-## Chinese Summary
-
-这是一个用于生成 Git commit message 的可分享 AI skill 仓库，包含两个 skill：
-
-- `ggm`：只生成 commit message
-- `ggm-p`：生成 commit message 后，再询问是否执行 `git commit`
-
-其中 `ggm-p` 还会：
-
-- 只选择和本次调整相关的文件进行 commit
-- 在 commit 前检查这些文件里是否可能泄露个人隐私信息
-- 如果发现疑似隐私风险，会提醒用户自行决定是否继续
-- 不会自动执行 `git push`
 
 ## License
 
