@@ -8,7 +8,7 @@ After the repo is published, run:
 
 ```bash
 claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
-claude plugin install git-commit-message@zephyrcicd-skills
+claude plugin install git-commit-message@git-skills
 ```
 
 If you want the shortcut name too, add a local alias after install:

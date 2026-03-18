@@ -46,7 +46,7 @@ This repository is structured as a Claude Code marketplace repository.
 
 ```bash
 claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
-claude plugin install git-commit-message@zephyrcicd-skills
+claude plugin install git-commit-message@git-skills
 ```
 
 Optional alias:
