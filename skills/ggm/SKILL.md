@@ -1,9 +1,9 @@
 ---
-name: generate-git-message
+name: ggm
 description: "Use when the user wants a Git commit message for the latest task in the current conversation, based on the current repository diff or staged changes, especially when they want concise Conventional Commit output such as feat:, fix:, refactor:, or scoped forms like feat(ship):"
 ---
 
-# Generate Git Message
+# GGM
 
 ## Overview
 

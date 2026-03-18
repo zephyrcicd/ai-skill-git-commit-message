@@ -1,24 +1,28 @@
-# Git Commit Message Skill
+# Git Commit Message Skills
 
-A shareable AI skill for generating clean Git commit messages from the latest conversation context and the current git diff.
+A shareable AI skill repo for generating Git commit messages from conversation context and the current git diff.
 
-It is designed for people who repeatedly ask their coding agent to "write the commit message for this change" and want a fast, consistent result without retyping prompt instructions every time.
+It now ships two related skills:
 
-## What This Skill Does
+- `ggm` - generate a concise commit message only
+- `ggm-p` - generate a commit message, then ask whether to run `git commit` for the relevant files
 
-This skill helps an AI agent generate a commit message by combining:
+## What These Skills Do
+
+These skills help an AI agent combine:
 
 - the latest task discussed in the conversation
 - the actual staged or unstaged git changes in the repository
 - Conventional Commit best practices
 - optional scoped commit style such as `feat(ship): ...`
 
-It is especially useful when:
+`ggm-p` adds an extra guarded flow:
 
-- you want short, production-style commit subjects
-- you use Conventional Commits
-- you want the model to understand Chinese context but output the final commit message in natural English
-- you want a reusable shortcut such as `ggm`
+- selects only files relevant to the current change
+- checks selected files for likely personal privacy leakage before commit
+- asks the developer whether to run `git commit`
+- commits only if the developer replies `1`
+- never runs `git push`
 
 ## Features
 
@@ -27,7 +31,7 @@ It is especially useful when:
 - Prefers the real git diff over vague conversational intent when they conflict
 - Supports Chinese task descriptions while outputting English commit messages
 - Works with both Claude Code and Codex
-- Can be installed with the shortcut alias `ggm`
+- Keeps `ggm` and `ggm-p` separate so message-only and commit-assisted flows stay explicit
 
 ## Example Outputs
 
@@ -49,12 +53,6 @@ claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
 claude plugin install git-commit-message@git-skills
 ```
 
-Optional alias:
-
-```bash
-ln -sfn ~/.claude/skills/generate-git-message ~/.claude/skills/ggm
-```
-
 Detailed guide: `docs/install-claude-code.md`
 
 ### Codex
@@ -64,8 +62,8 @@ Codex currently uses the clone-based install flow for this repository.
 ```bash
 mkdir -p ~/ai/skills ~/.codex/skills
 git clone https://github.com/zephyrcicd/ai-skill-git-commit-message ~/ai/skills/ai-skill-git-commit-message
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/generate-git-message ~/.codex/skills/generate-git-message
-ln -sfn ~/.codex/skills/generate-git-message ~/.codex/skills/ggm
+ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm ~/.codex/skills/ggm
+ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm-p ~/.codex/skills/ggm-p
 ```
 
 Detailed guide: `docs/install-codex.md`
@@ -77,53 +75,51 @@ If you want Codex to install it for you, point it to:
 
 ## Usage
 
-After installation, invoke the skill with:
-
-```text
-$generate-git-message
-```
-
-If you created the alias:
-
 ```text
 $ggm
+```
+
+```text
+$ggm-p
 ```
 
 ## Repository Layout
 
 ```text
 .
-├── skills/generate-git-message/   # the actual skill
+├── skills/ggm/                    # generate commit message
+├── skills/ggm-p/                  # generate message and offer commit
 ├── .claude-plugin/plugin.json     # Claude Code plugin entry
+├── .claude-plugin/marketplace.json
 ├── .codex/INSTALL.md              # Codex install instructions
 ├── docs/                          # platform-specific install guides
 └── install.sh                     # local helper installer
 ```
 
-## Why Only One Skill Directory?
+## Choosing Between Them
 
-This repository intentionally keeps only one real skill directory: `generate-git-message`.
+Use `ggm` when you only want the commit message.
 
-The shortcut name `ggm` is an installation-time alias, not a duplicated second skill. This keeps the repo easier to maintain while still letting users invoke the skill with a shorter command.
+Use `ggm-p` when you want the model to:
+
+- generate the message
+- narrow the commit to relevant files
+- check those selected files for likely privacy leakage
+- ask whether to run `git commit`
 
 ## Chinese Summary
 
-这是一个用于生成 Git commit message 的可分享 AI skill。
+这是一个用于生成 Git commit message 的可分享 AI skill 仓库，包含两个 skill：
 
-它会结合最近一次对话中的任务目标和当前仓库的 git diff，生成简洁的 Conventional Commit 风格提交信息，比如：
+- `ggm`：只生成 commit message
+- `ggm-p`：生成 commit message 后，再询问是否执行 `git commit`
 
-- `feat: ...`
-- `fix: ...`
-- `refactor: ...`
-- `feat(ship): ...`
+其中 `ggm-p` 还会：
 
-特点：
-
-- 支持中文上下文理解，最终输出英文 commit message
-- 优先依据真实代码改动，而不是只看对话描述
-- Claude Code 可直接从 GitHub 安装
-- Codex 可通过 `.codex/INSTALL.md` 或 clone 方式安装
-- 可以本地配置 `ggm` 作为快捷别名
+- 只选择和本次调整相关的文件进行 commit
+- 在 commit 前检查这些文件里是否可能泄露个人隐私信息
+- 如果发现疑似隐私风险，会提醒用户自行决定是否继续
+- 不会自动执行 `git push`
 
 ## License
 

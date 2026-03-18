@@ -2,7 +2,6 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
-SKILL_SRC="$REPO_DIR/skills/generate-git-message"
 MODE="${1:-all}"
 
 link_skill() {
@@ -21,16 +20,16 @@ link_skill() {
 
 install_codex() {
   mkdir -p "$HOME/.codex/skills"
-  link_skill "$SKILL_SRC" "$HOME/.codex/skills/generate-git-message"
-  link_skill "$SKILL_SRC" "$HOME/.codex/skills/ggm"
-  echo "Installed for Codex: $HOME/.codex/skills/{generate-git-message,ggm}"
+  link_skill "$REPO_DIR/skills/ggm" "$HOME/.codex/skills/ggm"
+  link_skill "$REPO_DIR/skills/ggm-p" "$HOME/.codex/skills/ggm-p"
+  echo "Installed for Codex: $HOME/.codex/skills/{ggm,ggm-p}"
 }
 
 install_claude() {
   mkdir -p "$HOME/.claude/skills"
-  link_skill "$SKILL_SRC" "$HOME/.claude/skills/generate-git-message"
-  link_skill "$SKILL_SRC" "$HOME/.claude/skills/ggm"
-  echo "Installed for Claude Code: $HOME/.claude/skills/{generate-git-message,ggm}"
+  link_skill "$REPO_DIR/skills/ggm" "$HOME/.claude/skills/ggm"
+  link_skill "$REPO_DIR/skills/ggm-p" "$HOME/.claude/skills/ggm-p"
+  echo "Installed for Claude Code: $HOME/.claude/skills/{ggm,ggm-p}"
 }
 
 case "$MODE" in
