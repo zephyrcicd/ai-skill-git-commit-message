@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Git Message"
+  short_description: "Generate clean git commit messages"
+  default_prompt: "Use $generate-git-message to produce a concise Conventional Commit message from this session and the current git diff."
