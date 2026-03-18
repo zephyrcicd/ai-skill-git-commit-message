@@ -48,45 +48,46 @@ chore: clean up unused feature flags
 
 ## 安装
 
-### Claude Code
+不同平台的安装方式不同。Claude Code 使用 marketplace 流程；Codex 和 OpenCode 更适合直接把一句安装指令复制给对应 AI；Gemini CLI 使用它自己的 extension 安装方式。
 
-本仓库按 Claude Code marketplace 仓库结构组织。
+### Claude Code
 
 ```bash
 claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
 claude plugin install git-commit-message@git-skills
 ```
 
-详细说明见：`docs/install-claude-code.md`
-
 ### Codex
 
-Codex 当前使用 clone 安装方式。
+直接告诉 Codex：
 
-```bash
-mkdir -p ~/ai/skills ~/.codex/skills
-git clone https://github.com/zephyrcicd/ai-skill-git-commit-message ~/ai/skills/ai-skill-git-commit-message
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm ~/.codex/skills/ggm
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm-p ~/.codex/skills/ggm-p
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/zephyrcicd/ai-skill-git-commit-message/refs/heads/main/.codex/INSTALL.md
 ```
 
 详细说明见：`docs/install-codex.md`
 
-如果希望让 Codex 自动安装，可以让它读取：
-
-- `.codex/INSTALL.md`
-- `docs/install-for-codex-agent.md`
-
-
 ### OpenCode
 
-OpenCode 采用类似 Superpowers 的 git clone + symlink 安装方式。
+直接告诉 OpenCode：
+
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/zephyrcicd/ai-skill-git-commit-message/refs/heads/main/.opencode/INSTALL.md
+```
 
 详细说明见：`docs/install-opencode.md`
 
 ### Gemini CLI
 
-Gemini CLI 采用 git clone + `~/.gemini/GEMINI.md` 引用的方式。
+```bash
+gemini extensions install https://github.com/zephyrcicd/ai-skill-git-commit-message
+```
+
+更新：
+
+```bash
+gemini extensions update git-commit-message
+```
 
 详细说明见：`docs/install-gemini-cli.md`
 

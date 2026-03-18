@@ -48,45 +48,46 @@ chore: clean up unused feature flags
 
 ## Install
 
-### Claude Code
+Installation differs by platform. Claude Code uses a marketplace flow. Codex and OpenCode are best installed by telling the agent to fetch platform-specific instructions. Gemini CLI uses its native extension install flow.
 
-This repository is structured as a Claude Code marketplace repository.
+### Claude Code
 
 ```bash
 claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
 claude plugin install git-commit-message@git-skills
 ```
 
-Detailed guide: `docs/install-claude-code.md`
-
 ### Codex
 
-Codex currently uses the clone-based install flow for this repository.
+Tell Codex:
 
-```bash
-mkdir -p ~/ai/skills ~/.codex/skills
-git clone https://github.com/zephyrcicd/ai-skill-git-commit-message ~/ai/skills/ai-skill-git-commit-message
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm ~/.codex/skills/ggm
-ln -sfn ~/ai/skills/ai-skill-git-commit-message/skills/ggm-p ~/.codex/skills/ggm-p
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/zephyrcicd/ai-skill-git-commit-message/refs/heads/main/.codex/INSTALL.md
 ```
 
 Detailed guide: `docs/install-codex.md`
 
-If you want Codex to install it for you, point it to:
-
-- `.codex/INSTALL.md`
-- `docs/install-for-codex-agent.md`
-
-
 ### OpenCode
 
-OpenCode uses a git clone plus symlink flow similar to Superpowers.
+Tell OpenCode:
+
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/zephyrcicd/ai-skill-git-commit-message/refs/heads/main/.opencode/INSTALL.md
+```
 
 Detailed guide: `docs/install-opencode.md`
 
 ### Gemini CLI
 
-Gemini CLI uses a git clone plus `~/.gemini/GEMINI.md` reference flow.
+```bash
+gemini extensions install https://github.com/zephyrcicd/ai-skill-git-commit-message
+```
+
+To update:
+
+```bash
+gemini extensions update git-commit-message
+```
 
 Detailed guide: `docs/install-gemini-cli.md`
 
