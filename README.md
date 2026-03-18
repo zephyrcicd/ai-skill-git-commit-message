@@ -42,10 +42,11 @@ chore: clean up unused feature flags
 
 ### Claude Code
 
-This repository is structured for direct installation from GitHub.
+This repository is structured as a Claude Code marketplace repository.
 
 ```bash
-claude plugin install https://github.com/zephyrcicd/ai-skill-git-commit-message
+claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
+claude plugin install git-commit-message@zephyrcicd-skills
 ```
 
 Optional alias:

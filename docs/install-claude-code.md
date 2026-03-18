@@ -1,13 +1,14 @@
 # Install for Claude Code
 
-Recommended: install directly from the GitHub repository instead of cloning locally first.
+Recommended: add this repository as a marketplace, then install the plugin from that marketplace.
 
-## Direct install from GitHub
+## Marketplace install
 
 After the repo is published, run:
 
 ```bash
-claude plugin install https://github.com/zephyrcicd/ai-skill-git-commit-message
+claude plugin marketplace add zephyrcicd/ai-skill-git-commit-message
+claude plugin install git-commit-message@zephyrcicd-skills
 ```
 
 If you want the shortcut name too, add a local alias after install:

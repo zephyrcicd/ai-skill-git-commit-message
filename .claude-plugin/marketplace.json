@@ -1,0 +1,15 @@
+{
+  "name": "zephyrcicd-skills",
+  "owner": {
+    "name": "Zephyr",
+    "url": "https://github.com/zephyrcicd"
+  },
+  "plugins": [
+    {
+      "name": "git-commit-message",
+      "description": "Generate concise Conventional Commit messages from conversation context and git diff",
+      "version": "0.1.0",
+      "source": "./"
+    }
+  ]
+}
