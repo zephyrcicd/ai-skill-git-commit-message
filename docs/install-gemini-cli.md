@@ -27,7 +27,7 @@ A shared skill repo is available at `~/.gemini/git-commit-message`.
 When the user asks to generate a git commit message from the latest conversation context and current git diff, read and follow:
 - `~/.gemini/git-commit-message/skills/ggm/SKILL.md`
 
-When the user asks to generate a git commit message and optionally run `git commit` after confirmation, read and follow:
+When the user asks to generate a git commit message and automatically run `git commit` after the privacy check passes, read and follow:
 - `~/.gemini/git-commit-message/skills/ggm-p/SKILL.md`
 ```
 

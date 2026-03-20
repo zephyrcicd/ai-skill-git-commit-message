@@ -1,13 +1,13 @@
 ---
 name: ggm-p
-description: "Use when the user wants a Git commit message plus an optional git commit flow for the latest task in the current conversation, based on the current repository diff or staged changes, with an explicit confirmation step before committing and a privacy check on the files selected for commit"
+description: "Use when the user wants a Git commit message plus an automatic git commit flow for the latest task in the current conversation, based on the current repository diff or staged changes, with a privacy check on the files selected for commit"
 ---
 
 # GGM-P
 
 ## Overview
 
-Generate a commit message from the latest conversation goal and the actual git changes in the current repo. Prefer Conventional Commits, then optionally help run git commit after explicit user confirmation.
+Generate a commit message from the latest conversation goal and the actual git changes in the current repo. Prefer Conventional Commits, then automatically run git commit for the relevant files after the privacy check passes.
 
 ## Workflow
 
@@ -15,24 +15,24 @@ Generate a commit message from the latest conversation goal and the actual git c
 2. Inspect the current repository state, prioritizing staged changes and then unstaged diff if needed.
 3. Infer the dominant change type from the code changes, not from vague intent alone.
 4. Identify the subset of uncommitted files that are relevant to the current change rather than blindly using every modified file.
-5. Check the selected files for likely personal privacy leakage before suggesting a commit.
-6. Output the commit message first, then ask the user whether to run git commit.
+5. Check the selected files for likely personal privacy leakage before committing.
+6. If no likely privacy issue is found, stage only the relevant files and run git commit with the generated message.
+7. Output the final commit message and a brief commit result.
 
 If conversation intent and diff disagree, trust the diff.
 
 ## Message Rules
 
-- First output the commit message.
-- Then ask exactly one confirmation question: `Reply 1 to run git commit with the relevant files from this change; reply anything else to skip.`
-- Do not run `git commit` unless the user explicitly replies `1`.
-- If the user does not reply `1`, stop after the message and let the user handle commit manually.
+- Generate the commit message first, then use it for the commit.
 - When preparing the commit, stage only the files relevant to the current task, not every uncommitted file in the repository.
-- If a privacy check finds likely personal information in the files selected for commit, warn the user and let the user decide whether to continue.
+- If a privacy check finds likely personal information in the files selected for commit, warn the user and stop without committing.
 - If no likely privacy issue is found, do not mention privacy.
-- Before confirmation, output only:
+- On success, output only:
   - the commit message
-  - one confirmation question if no privacy issue is found
-  - or a brief privacy warning plus a request for user decision if a privacy issue is found
+  - one brief plain-text sentence confirming that git commit was created for the relevant files
+- If a privacy issue is found, output only:
+  - the commit message
+  - a brief privacy warning that commit was skipped
 - Do not add backticks, quotes, bullets, labels, or extra commentary.
 - Default to a single-line subject.
 - Upgrade to `subject + blank line + body` only when the change is clearly multi-part, risky, or non-obvious.
@@ -40,8 +40,11 @@ If conversation intent and diff disagree, trust the diff.
 - Use imperative, repository-style wording such as `add`, `fix`, `refactor`, `remove`, `rename`, `update`.
 - Do not end the subject with punctuation.
 - Use lowercase type and scope.
-- Understand the user's request in Chinese if needed, but write the final commit message in English.
-- Translate intent, domain nouns, and change summaries into natural engineering English rather than pinyin or literal Chinese phrasing.
+- Detect the dominant language used in the last 3 user messages and write the final commit message in that language.
+- If those 3 user messages are mixed, too short, or unclear, fall back to the broader recent conversation.
+- If the language signal is still unclear after fallback, default to English.
+- Language signal priority: last 3 user messages > broader recent conversation > English fallback.
+- When writing Chinese commit messages, keep the Conventional Commit type and optional scope in their standard repository form such as `feat:` or `fix(auth):`, and localize only the subject/body text as needed.
 
 ## Type Selection
 
@@ -111,26 +114,23 @@ Body rules:
 - Dependency bumps alone usually mean `build:` or `chore:`
 - Formatting-only changes usually mean `chore:`
 
-## Chinese Input Handling
+## Conversation Language Handling
 
-- Read Chinese task descriptions, code comments, and conversation context normally.
-- Infer the engineering intent first, then express it as concise English commit wording.
+- Read Chinese or English task descriptions, code comments, and conversation context normally.
+- Infer the engineering intent first, then express it in the dominant language used by the last 3 user messages.
+- If those 3 user messages do not provide a clear signal, fall back to the broader recent conversation.
+- Apply the language signal priority consistently: last 3 user messages > broader recent conversation > English fallback.
 - Preserve product or domain terms that are already established in code, such as `ship`, `checkout`, `ledger`, or `auth`.
-- Prefer standard English commit verbs and nouns:
-  - `新增` -> `add`
-  - `支持` -> `support`
-  - `修复` -> `fix`
-  - `避免` -> `prevent`
-  - `重构` -> `refactor`
-  - `提取` -> `extract`
-  - `清理` -> `clean up`
-  - `对齐` -> `align`
-  - `同步` -> `sync`
-- Avoid awkward literal translations. Prefer what an English-speaking engineer would actually write in a commit subject.
+- If the last 3 user messages are mainly Chinese, prefer concise Chinese engineering phrasing in the subject/body text.
+- If the last 3 user messages are mainly English, prefer natural engineering English rather than literal translation.
+- If the last 3 user messages are mixed but clearly lean one way, follow that language.
+- If the signal is ambiguous, default to English.
 
 ## Output Examples
 
 `feat(ship): add batch label sync`
+
+`fix(auth): 修复刷新 token 死循环`
 
 `fix(payments): prevent duplicate webhook capture`
 
@@ -143,13 +143,13 @@ Body rules:
 Retry the external sync when the provider returns a transient failure
 Keep the checkout flow responsive by falling back to cached address data`
 
-## Commit Confirmation Flow
+## Commit Execution Flow
 
 - Generate the commit message from the relevant diff first.
 - Identify the files tied to the current adjustment based on file paths, diff content, and conversation scope.
 - Exclude unrelated dirty files when they are not part of the current task.
-- Ask for confirmation after showing the commit message.
-- Only if the user replies `1`, run `git add` for the relevant files and then run `git commit -m "<message>"`.
+- If no likely privacy issue is found, run `git add` for the relevant files and then run `git commit -m "<message>"`.
+- If a privacy issue is found, stop and tell the user commit was skipped.
 - Never run `git push` as part of this skill.
 
 ## Privacy Check Before Commit
@@ -166,8 +166,7 @@ If likely privacy leakage is found:
 
 - warn the user briefly
 - name the suspicious file or files
-- ask the user to decide whether to continue
-- do not auto-commit until the user confirms again
+- state that commit was skipped
 
 If no likely privacy leakage is found, do not mention the privacy check in the output.
 

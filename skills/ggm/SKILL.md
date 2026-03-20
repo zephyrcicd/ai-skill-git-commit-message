@@ -28,8 +28,11 @@ If conversation intent and diff disagree, trust the diff.
 - Use imperative, repository-style wording such as `add`, `fix`, `refactor`, `remove`, `rename`, `update`.
 - Do not end the subject with punctuation.
 - Use lowercase type and scope.
-- Understand the user's request in Chinese if needed, but write the final commit message in English.
-- Translate intent, domain nouns, and change summaries into natural engineering English rather than pinyin or literal Chinese phrasing.
+- Detect the dominant language used in the last 3 user messages and write the final commit message in that language.
+- If those 3 user messages are mixed, too short, or unclear, fall back to the broader recent conversation.
+- If the language signal is still unclear after fallback, default to English.
+- Language signal priority: last 3 user messages > broader recent conversation > English fallback.
+- When writing Chinese commit messages, keep the Conventional Commit type and optional scope in their standard repository form such as `feat:` or `fix(auth):`, and localize only the subject/body text as needed.
 
 ## Type Selection
 
@@ -99,26 +102,23 @@ Body rules:
 - Dependency bumps alone usually mean `build:` or `chore:`
 - Formatting-only changes usually mean `chore:`
 
-## Chinese Input Handling
+## Conversation Language Handling
 
-- Read Chinese task descriptions, code comments, and conversation context normally.
-- Infer the engineering intent first, then express it as concise English commit wording.
+- Read Chinese or English task descriptions, code comments, and conversation context normally.
+- Infer the engineering intent first, then express it in the dominant language used by the last 3 user messages.
+- If those 3 user messages do not provide a clear signal, fall back to the broader recent conversation.
+- Apply the language signal priority consistently: last 3 user messages > broader recent conversation > English fallback.
 - Preserve product or domain terms that are already established in code, such as `ship`, `checkout`, `ledger`, or `auth`.
-- Prefer standard English commit verbs and nouns:
-  - `新增` -> `add`
-  - `支持` -> `support`
-  - `修复` -> `fix`
-  - `避免` -> `prevent`
-  - `重构` -> `refactor`
-  - `提取` -> `extract`
-  - `清理` -> `clean up`
-  - `对齐` -> `align`
-  - `同步` -> `sync`
-- Avoid awkward literal translations. Prefer what an English-speaking engineer would actually write in a commit subject.
+- If the last 3 user messages are mainly Chinese, prefer concise Chinese engineering phrasing in the subject/body text.
+- If the last 3 user messages are mainly English, prefer natural engineering English rather than literal translation.
+- If the last 3 user messages are mixed but clearly lean one way, follow that language.
+- If the signal is ambiguous, default to English.
 
 ## Output Examples
 
 `feat(ship): add batch label sync`
+
+`fix(auth): 修复刷新 token 死循环`
 
 `fix(payments): prevent duplicate webhook capture`
 

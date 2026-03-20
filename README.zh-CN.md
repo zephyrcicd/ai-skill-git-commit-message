@@ -9,7 +9,7 @@
 仓库包含两个相关 skill：
 
 - `ggm` - 只生成简洁的 commit message
-- `ggm-p` - 先生成 commit message，再询问是否对相关文件执行 `git commit`
+- `ggm-p` - 生成 commit message，检查相关文件，并在隐私检查通过后自动执行 `git commit`
 
 ## 这两个 Skill 的作用
 
@@ -24,8 +24,8 @@
 
 - 只选择和本次改动相关的文件
 - 在 commit 前检查这些文件中是否可能包含个人隐私信息
-- 询问开发者是否执行 `git commit`
-- 只有开发者回复 `1` 才会真正 commit
+- 如果没有隐私风险就自动执行 `git commit`
+- 如果发现疑似隐私信息就跳过 commit 并告警
 - 不会自动执行 `git push`
 
 ## 特点
@@ -33,9 +33,9 @@
 - 生成简洁的 Conventional Commit 信息，例如 `feat:`、`fix:`、`refactor:`、`chore:`
 - 当改动领域明确时自动补 scope，例如 `feat(ship): ...`
 - 当对话描述与实际 diff 冲突时，优先相信真实代码改动
-- 支持中文任务描述理解，但最终输出英文 commit message
+- 生成 commit message 时会优先跟随最近 3 轮用户消息的主语言，必要时再回退到更宽的最近对话上下文
 - 同时支持 Claude Code 和 Codex
-- 将 `ggm` 和 `ggm-p` 分开，便于明确区分“仅生成 message”和“带 commit 确认”的流程
+- 将 `ggm` 和 `ggm-p` 分开，便于明确区分“仅生成 message”和“自动 commit”的流程
 
 ## 示例输出
 
@@ -121,7 +121,7 @@ $ggm-p
 ```text
 .
 ├── skills/ggm/                    # 生成 commit message
-├── skills/ggm-p/                  # 生成 message 并提供 commit 确认
+├── skills/ggm-p/                  # 生成 message 并自动 commit
 ├── .claude-plugin/plugin.json     # Claude Code 插件入口
 ├── .claude-plugin/marketplace.json
 ├── .codex/INSTALL.md              # Codex 安装说明
@@ -138,7 +138,7 @@ $ggm-p
 - 生成 commit message
 - 缩小到本次改动相关文件
 - 检查这些文件是否可能包含隐私信息
-- 询问是否执行 `git commit`
+- 在隐私检查通过时自动执行 `git commit`
 
 则使用 `ggm-p`。
 

@@ -9,7 +9,7 @@ Recommended install style: Git-first. Clone the repo locally, then follow the pl
 It ships two related skills:
 
 - `ggm` - generate a concise commit message only
-- `ggm-p` - generate a commit message, then ask whether to run `git commit` for the relevant files
+- `ggm-p` - generate a commit message, check the relevant files, and commit automatically when the privacy check passes
 
 ## What These Skills Do
 
@@ -24,8 +24,8 @@ These skills help an AI agent combine:
 
 - selects only files relevant to the current change
 - checks selected files for likely personal privacy leakage before commit
-- asks the developer whether to run `git commit`
-- commits only if the developer replies `1`
+- runs `git commit` automatically if no likely privacy issue is found
+- skips commit and warns if likely privacy leakage is detected
 - never runs `git push`
 
 ## Features
@@ -33,7 +33,7 @@ These skills help an AI agent combine:
 - Generates concise Conventional Commit messages such as `feat:`, `fix:`, `refactor:`, and `chore:`
 - Adds scope when the changed domain is clear, such as `feat(ship): ...`
 - Prefers the real git diff over vague conversational intent when they conflict
-- Supports Chinese task descriptions while outputting English commit messages
+- Follows the dominant language used in the last 3 user messages when generating commit messages, with fallback to broader recent context
 - Works with both Claude Code and Codex
 - Keeps `ggm` and `ggm-p` separate so message-only and commit-assisted flows stay explicit
 
@@ -121,7 +121,7 @@ $ggm-p
 ```text
 .
 ├── skills/ggm/                    # generate commit message
-├── skills/ggm-p/                  # generate message and offer commit
+├── skills/ggm-p/                  # generate message and auto-commit
 ├── .claude-plugin/plugin.json     # Claude Code plugin entry
 ├── .claude-plugin/marketplace.json
 ├── .codex/INSTALL.md              # Codex install instructions
@@ -138,7 +138,7 @@ Use `ggm-p` when you want the model to:
 - generate the message
 - narrow the commit to relevant files
 - check those selected files for likely privacy leakage
-- ask whether to run `git commit`
+- run `git commit` automatically when the privacy check passes
 
 ## License
 
